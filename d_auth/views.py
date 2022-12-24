@@ -5,6 +5,10 @@ from django.contrib.auth import authenticate,login
 # Create your views here.
 
 def create_customer(request):
+    initial_data = {
+        'password1' : '#password123',
+        'password2' : '#password123',
+    }
     msg = None
     if request.method == 'POST':
         form = CreateCustomer(request.POST)

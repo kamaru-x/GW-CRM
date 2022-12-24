@@ -3,6 +3,8 @@ from d_auth.models import User
 from administrator.models import Domain,CCode,Country,Tickets,Replayes
 from django.contrib.auth.decorators import user_passes_test
 from datetime import date
+import datetime
+from dateutil.relativedelta import relativedelta
 
 # Create your views here.
 
@@ -58,7 +60,9 @@ def add_domain(request):
         cus = User.objects.get(id=customer)
         domain = request.POST.get('domain')
         date = request.POST.get('date')
-        data = Domain(Customer_Name=cus,Domain_Name=domain,Purchase_Date=date)
+        today = datetime.date.today()
+        r_date = today + relativedelta(years = 1)
+        data = Domain(Customer_Name=cus,Domain_Name=domain,Purchase_Date=date,Renewal_Date=r_date)
         data.save()
         return redirect('.')
     context = {
@@ -82,7 +86,7 @@ def replay_ticket(request,id):
 	if request.method == 'POST' :
 		replay = request.POST.get('message')
 		dt = date.today()
-		attachment = request.FILES['attachment']
+		attachment = request.FILES.get('attachment')
 		data = Replayes(Ticket=ticket,Sender=usr,Replay=replay,Date=dt,Attachment=attachment)
 		data.save()
 		return redirect('/ticket-replayes/%s'%ticket.id)

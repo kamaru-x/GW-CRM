@@ -29,13 +29,14 @@
 {% block content %}
 
 <div class="card m-5 col-md-11 p-3 border border-primary">
-    <!-- <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
-      <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp" class="img-fluid"/>
+  {% if ticket.Attachment %}
+    <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
+      <img src="{{ticket.Attachment}}" class="img-fluid"/>
       <a href="#!">
         <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
       </a>
     </div>
-    <hr> -->
+  {% endif %}
     <div class="card-body text-center">
         <span class="badge badge-success">{{ticket.Creator}} // {{ticket.Date}}</span>
         <hr>
@@ -45,13 +46,14 @@
 
 <div class="card m-5 col-md-11 p-3 border border-primary">
   {% for replay in replays %}
-    <!-- <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
-      <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp" class="img-fluid"/>
+  {% if replay.Attachment %}
+    <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
+      <img src="{{replay.Attachment}}" class="img-fluid"/>
       <a href="#!">
         <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
       </a>
     </div>
-    <hr> -->
+  {% endif %}
     <div class="card-body">
         <span class="badge badge-success mb-2">{{replay.Sender}} // {{replay.Date}}</span>
       <p class="card-text ">{{replay.Replay}}</p>
@@ -73,7 +75,7 @@
             </div>
             <div class="form-outline mb-4 col-md-12 text-center">
               <label class="form-label">Attach File</label>
-              <input required="True" type="file" name="attachment" class="form-control" />
+              <input type="file" name="attachment" class="form-control" />
             </div>
       </div>
       <div class="row mb-4 text-center">

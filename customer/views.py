@@ -28,7 +28,7 @@ def user_tickets_list(request):
 def create_ticket(request):
     if request.method == 'POST':
         message = request.POST.get('message')
-        attachment = request.FILES['attachment']
+        attachment = request.FILES.get('attachment')
         creator = request.user
         dat = date.today()
         ticket = Tickets(Creator=creator,Message=message,Attachment=attachment,Date=dat)
@@ -44,7 +44,7 @@ def tickets_replay(request,id):
     if request.method == 'POST':
         replay = request.POST.get('message')
         dt = date.today() 
-        attachment = request.FILES['attachment']
+        attachment = request.FILES.get('attachment')
         data = Replayes(Ticket=ticket,Sender=usr,Replay=replay,Date=dt,Attachment=attachment)
         data.save()
         return redirect('/replayes/%s'%ticket.id)
