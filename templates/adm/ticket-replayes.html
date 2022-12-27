@@ -29,38 +29,39 @@
 {% block content %}
 
 <div class="card m-5 col-md-11 p-3 border border-primary">
+  {% for replay in replays %}
+  {% if replay.Attachment %}
+    <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
+      <img src="{{replay.Attachment.url}}" class="img-fluid"/>
+      <!-- <a href="{{replay.Attachment.url}}">
+        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);">
+          <h6>{{replay.Attachment}}</h6>
+        </div>
+      </a> -->
+    </div>
+  {% endif %}
+    <div class="card-body">
+        <span class="badge badge-warning mb-2">{{replay.Sender}} // {{replay.Date}}</span>
+      <p class="card-text"></p>
+      <h3 class="card-text">{{replay.Replay}}</h3>
+    </div>
+    <hr>
+  {% endfor %}
+
   {% if ticket.Attachment %}
   <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
-    <img src="{{ticket.Attachment}}" class="img-fluid"/>
+    <img src="{{ticket.Attachment.url}}" class="img-fluid"/>
     <a href="#!">
       <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
     </a>
   </div>
   <hr>
   {% endif %}
-  <div class="card-body text-center">
-      <span class="badge badge-success">{{ticket.Creator}} // {{ticket.Date}}</span>
-      <hr>
-    <p class="card-text">{{ticket.Message}}</p>
+  <div class="card-body">
+      <span class="badge badge-warning">{{ticket.Creator}} // {{ticket.Date}}</span>
+    <p class="card-text"></p>
+    <h3 class="card-text">{{ticket.Message}}</h3>
   </div>
-</div>
-
-<div class="card m-5 col-md-11 p-3 border border-primary">
-  {% for replay in replays %}
-  {% if replay.Attachment %}
-    <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
-      <img src="{{replay.Attachment}}" class="img-fluid"/>
-      <a href="#!">
-        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-      </a>
-    </div>
-  {% endif %}
-    <div class="card-body">
-        <span class="badge badge-success mb-2">{{replay.Sender}} // {{replay.Date}}</span>
-      <p class="card-text ">{{replay.Replay}}</p>
-    </div>
-    <hr>
-  {% endfor %}
 </div>
 
 <div class="container-fluid p-5">

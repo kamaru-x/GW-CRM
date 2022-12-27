@@ -39,6 +39,7 @@
           <!-- <th scope="col" class="sort" data-sort="status">Logo</th> -->
           <th scope="col" class="sort" data-sort="status">Email</th>
           <th scope="col" class="sort" data-sort="status">Mobile</th>
+          <th scope="col" class="sort" data-sort="completion">Domains</th>
           <th scope="col" class="sort" data-sort="completion"></th>
           <th scope="col" class="sort" data-sort="completion"></th>
           <!-- <th></th> -->
@@ -69,6 +70,7 @@
             {% endif %} -->
             <td>{{customer.email}}</td>
             <td>{{customer.Mobile}}</td>
+            <td>{{customer.Domains}}</td>
             <td>
               <a href="{% url 'customer-details' customer.username %}"><button class="btn btn-success">view</button></a>
             </td>
