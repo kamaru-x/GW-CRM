@@ -19,3 +19,4 @@ class User(AbstractUser):
     Country = models.ForeignKey(Countries,on_delete=models.DO_NOTHING,null=True,blank=True)
     CCode = models.ForeignKey(CCodes,on_delete=models.DO_NOTHING,null=True,blank=True)
     Mobile = models.CharField('Mobile',max_length=15,null=True,blank=True)
+    Domains = models.IntegerField(default=0)

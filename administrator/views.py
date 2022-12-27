@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import user_passes_test
 from datetime import date
 import datetime
 from dateutil.relativedelta import relativedelta
+from datetime import datetime
+from datetime import timedelta
 
 # Create your views here.
 
@@ -60,10 +62,17 @@ def add_domain(request):
         cus = User.objects.get(id=customer)
         domain = request.POST.get('domain')
         date = request.POST.get('date')
-        today = datetime.date.today()
-        r_date = today + relativedelta(years = 1)
-        data = Domain(Customer_Name=cus,Domain_Name=domain,Purchase_Date=date,Renewal_Date=r_date)
+
+        Begindate = datetime.strptime(date, "%Y-%m-%d")
+        Enddate = Begindate + timedelta(days=365)
+
+        data = Domain(Customer_Name=cus,Domain_Name=domain,Purchase_Date=date,Renewal_Date=Enddate)
         data.save()
+
+        dcount = User.objects.get(id=cus.id)
+        dcount.Domains = dcount.Domains + 1
+        dcount.save()
+        
         return redirect('.')
     context = {
         'customers' : customers
