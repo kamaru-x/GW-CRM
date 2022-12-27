@@ -1,20 +1,19 @@
 from django.shortcuts import render,redirect
 from d_auth.forms import CreateCustomer,LoginForm
 from django.contrib.auth import authenticate,login
+from django.core.mail import send_mail
 
 # Create your views here.
 
 def create_customer(request):
-    initial_data = {
-        'password1' : '#password123',
-        'password2' : '#password123',
-    }
     msg = None
     if request.method == 'POST':
         form = CreateCustomer(request.POST)
         if form.is_valid():
-            user = form.save()
+            password = form.cleaned_data['password1']
+            # user = form.save()
             msg = 'user created'
+            send_mail('Password for Your Website','your password is #password123 ','xin.kamaru@gmail.com',['hackerkamaru@gmail.com'],fail_silently=False)
             return redirect('create-customer')
         else:
             msg = 'form is not valid'
