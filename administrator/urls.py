@@ -8,5 +8,6 @@ urlpatterns = [
     path('edit-customer/<int:id>/',views.edit_customer,name='edit-customer'),
     path('add-domain/',views.add_domain,name='add-domain'),
     path('list-tickets/',views.all_tickets,name='list-ticket'),
-    path('ticket-replayes/<int:id>',views.replay_ticket,name='ticket-replayes')
+    path('ticket-replayes/<int:id>',views.replay_ticket,name='ticket-replayes'),
+    path('close-ticket/<int:id>',views.admin_close_ticket,name='admin-close'),
 ]

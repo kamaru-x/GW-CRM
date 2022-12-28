@@ -60,6 +60,7 @@ def customer_details(request,username):
 #     }
 #     return render(request,'adm/edit_customer.html',context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def edit_customer(request,id):
     customer = User.objects.get(id=id)
     if request.method == 'POST':
@@ -101,7 +102,7 @@ def add_domain(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def all_tickets(request):
-	tickets = Tickets.objects.all().order_by('-id')
+	tickets = Tickets.objects.filter(Admin_Status=1).order_by('-id')
 	context = {
 		'tickets' : tickets
 	}
@@ -124,3 +125,10 @@ def replay_ticket(request,id):
 		'ticket' : ticket
 	}
 	return render(request,'adm/ticket-replayes.html',context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_close_ticket(request,id):
+    ticket = Tickets.objects.get(id=id)
+    ticket.Admin_Status = 0
+    ticket.save()
+    return redirect('list-ticket')

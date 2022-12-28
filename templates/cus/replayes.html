@@ -44,6 +44,12 @@
     </div>
 </div> -->
 
+<div class="row">
+  <div class="col-md-12 d-flex justify-content-end">
+    <a href="{% url 'customer-close' ticket.id %}"><input type="button" value="close ticket" class="btn btn-danger mr-5 mt-5" ></a>
+  </div>
+</div>
+
 <div class="card m-5 col-md-11 p-3 border border-primary">
   {% for replay in replays %}
   {% if replay.Attachment %}
@@ -58,7 +64,7 @@
     </div> -->
   {% endif %}
     <div class="card-body">
-        <span class="badge badge-warning mb-2">{{replay.Sender}} // {{replay.Date}}</span>
+        <span class="badge badge-warning mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
       <h3 class="card-text ">{{replay.Replay}}</h3>
     </div>
     <hr>
@@ -73,7 +79,7 @@
   </div>
   {% endif %}
   <div class="card-body">
-      <span class="badge badge-warning">{{ticket.Creator}} // {{ticket.Date}}</span>
+      <span class="badge badge-warning mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
     <h3 class="card-text">{{ticket.Message}}</h3>
   </div>
 

@@ -18,7 +18,7 @@ def list_domains(request):
 
 @login_required
 def user_tickets_list(request):
-    tickets = Tickets.objects.filter(Creator=request.user).order_by('-id')
+    tickets = Tickets.objects.filter(Creator=request.user).filter(Customer_Status=1).order_by('-id')
     context = {
         'tickets' : tickets
     }
@@ -53,3 +53,10 @@ def tickets_replay(request,id):
         'replays' : replayes,
     }
     return render(request,'cus/replayes.html',context)
+
+@login_required
+def customer_close_ticket(request,id):
+    ticket = Tickets.objects.get(id=id)
+    ticket.Customer_Status = 0
+    ticket.save()
+    return redirect('list-tickets')

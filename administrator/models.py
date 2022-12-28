@@ -28,6 +28,8 @@ class Tickets(models.Model):
     Message = models.TextField()
     Date = models.DateField(null=True,blank=True)
     Attachment = models.FileField(null=True,blank=True,upload_to='attachments/')
+    Admin_Status = models.IntegerField(default=1)
+    Customer_Status = models.IntegerField(default=1)
 
     def __str__(self):
         return self.Message
