@@ -21,12 +21,12 @@
                         {% csrf_token %}
                         <div class="form-outline mb-4">
                             <label class="form-label ps-auto" for="username">Username</label>
-                            {{form.username}}
+                            <input type="text" name="username" id="username" class="form-control form-control-lg" />
                         </div>
             
                         <div class="form-outline mb-4">
                             <label class="form-label ps-auto" for="password">Password</label>
-                            {{form.password}}
+                            <input type="password" name="password" id="password" class="form-control form-control-lg" />
                         </div>
                         <div class="text-center">
                         <input class="btn btn-primary btn-lg btn-block" type="submit"></input>
