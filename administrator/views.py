@@ -7,6 +7,8 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from datetime import timedelta
+from django.contrib import messages
+from administrator.forms import EditCustomer
 
 # Create your views here.
 
@@ -34,25 +36,41 @@ def customer_details(request,username):
     }
     return render(request,'adm/customer-details.html',context)
 
-@user_passes_test(lambda u: u.is_superuser)
+# @user_passes_test(lambda u: u.is_superuser)
+# def edit_customer(request,id):
+#     customer = User.objects.get(id=id)
+#     ccodes = CCode.objects.all().exclude(Code = customer.CCode)
+#     countries = Country.objects.all().exclude(Name = customer.Country)
+#     if request.method == 'POST' :
+#         c = request.POST.get('ccode')
+#         co = request.POST.get('country')
+
+#         customer.username = request.POST.get('name')
+#         customer.email = request.POST.get('email')
+#         customer.CCode = CCode.objects.get(id=c)
+#         customer.Mobile = request.POST.get('mobile')
+#         customer.Country = Country.objects.get(id=co)
+#         customer.save()
+#         messages.success(request,'customer details edited successfully')
+#         return redirect('.')
+#     context = {
+#         'customer' : customer,
+#         'ccodes' : ccodes,
+#         'countries' : countries,
+#     }
+#     return render(request,'adm/edit_customer.html',context)
+
 def edit_customer(request,id):
     customer = User.objects.get(id=id)
-    ccodes = CCode.objects.all().exclude(Code = customer.CCode)
-    countries = Country.objects.all().exclude(Name = customer.Country)
-    if request.method == 'POST' :
-        customer.username = request.POST.get('name')
-        customer.email = request.POST.get('email')
-        customer.CCode = request.POST.get('ccode')
-        customer.Mobile = request.POST.get('mobile')
-        customer.Country = request.POST.get('country')
-        customer.save()
-        return redirect('.')
-    context = {
-        'customer' : customer,
-        'ccodes' : ccodes,
-        'countries' : countries,
-    }
-    return render(request,'adm/edit_customer.html',context)
+    if request.method == 'POST':
+        form = EditCustomer(request.POST or None , instance=customer )
+        if form.is_valid():
+            form.save()
+            messages.success(request,'customer details edited successfully')
+            return redirect('.')
+    else:
+        form = EditCustomer(instance=customer)
+    return render(request,'adm/edit_customer.html',{'form':form})
 
 @user_passes_test(lambda u: u.is_superuser)
 def add_domain(request):
@@ -72,6 +90,8 @@ def add_domain(request):
         dcount = User.objects.get(id=cus.id)
         dcount.Domains = dcount.Domains + 1
         dcount.save()
+
+        messages.success(request,'successfully added new domain')
         
         return redirect('.')
     context = {

@@ -45,11 +45,11 @@ class CreateCustomer(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2','Country','CCode','Mobile')
 
         widgets = {
-            'username': TextInput(attrs={'class' : 'form-control'}),
-            'email': EmailInput(attrs={'class' : 'form-control'}),
+            'username': TextInput(attrs={'class' : 'form-control','placeholder':'Enter company name'}),
+            'email': EmailInput(attrs={'class' : 'form-control','placeholder':'Enter company email'}),
             'password1': TextInput(attrs={'class' : 'form-control'}),
             'password2': TextInput(attrs={'class' : 'form-control'}),
-            'Mobile': TextInput(attrs={'class' : 'form-control'}),
+            'Mobile': TextInput(attrs={'class' : 'form-control','placeholder':'Enter mobile number'}),
             'Country': Select(attrs={'class' : 'form-control'}),
             'CCode': Select(attrs={'class' : 'form-control'}),
         }

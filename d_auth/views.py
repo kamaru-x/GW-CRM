@@ -20,7 +20,16 @@ def create_customer(request):
         else:
             messages.error(request,'cant create user some error occupied')
     else:
-        form = CreateCustomer()
+        form = CreateCustomer(initial={
+            'password2': '#password123',
+            'password1': '#password123',
+            })
+        form.fields['password1'].widget.render_value = True
+        form.fields['password2'].widget.render_value = True
+        field = form.fields['password1']
+        field.widget = field.hidden_widget()
+        field = form.fields['password2']
+        field.widget = field.hidden_widget()
     return render(request,'aut/create-customer.html', {'form': form})
 
 def user_login(request):
