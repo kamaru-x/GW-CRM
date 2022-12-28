@@ -16,9 +16,9 @@
               <li class="breadcrumb-item active" aria-current="page">Add Customer</li>
             </ol>
           </nav>
-          {% if messages %}
+          {% if msg %}
               {% for message in messages %}
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-warning" role="alert">
                     {{message}} 
                 </div>
               {% endfor %}

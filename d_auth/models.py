@@ -16,7 +16,16 @@ class CCodes(models.Model):
         return self.Code
 
 class User(AbstractUser):
+    Name = models.CharField(max_length=50,null=True,blank=True)
+    email = models.EmailField(unique=True)
     Country = models.ForeignKey(Countries,on_delete=models.DO_NOTHING,null=True,blank=True)
     CCode = models.ForeignKey(CCodes,on_delete=models.DO_NOTHING,null=True,blank=True)
     Mobile = models.CharField('Mobile',max_length=15,null=True,blank=True)
     Domains = models.IntegerField(default=0)
+
+    USERNAME_FIELD = 'email'
+
+    REQUIRED_FIELDS = []
+
+    def get_username(self):
+        return self.email

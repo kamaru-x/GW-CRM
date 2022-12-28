@@ -14,14 +14,14 @@ def create_customer(request):
         if form.is_valid():
             password = form.cleaned_data['password1']
             user = form.save()
-            msg = 'user created'
+            messages.success(request,'created new customer')
             send_mail('Password for Your Website','your password is #password123 ','xin.kamaru@gmail.com',['hackerkamaru@gmail.com'],fail_silently=False)
             return redirect('create-customer')
         else:
-            msg = 'form is not valid'
+            messages.error(request,'cant create user some error occupied')
     else:
         form = CreateCustomer()
-    return render(request,'aut/create-customer.html', {'form': form, 'msg': msg})
+    return render(request,'aut/create-customer.html', {'form': form})
 
 def user_login(request):
     if request.method == 'POST':
