@@ -144,3 +144,27 @@ def admin_close_ticket(request,id):
     return redirect('list-ticket')
 
 ##################################################################################
+
+@user_passes_test(lambda u: u.is_superuser)
+def closed_tickets(request):
+	tickets = Tickets.objects.filter(Admin_Status=0).order_by('-id')
+	context = {
+		'tickets' : tickets
+	}
+	return render(request,'adm/closed-tickets.html',context)
+
+##################################################################################
+
+@user_passes_test(lambda u: u.is_superuser)
+def view_closed_ticket(request,id):
+    usr = request.user
+    replays = Replayes.objects.filter(Ticket__id=id).order_by('-id')
+    ticket = Tickets.objects.get(id=id)
+    context = {
+		'replays' : replays,
+		'ticket' : ticket
+	}
+    
+    return render(request,'adm/view-closed-tickets.html',context)
+
+##################################################################################

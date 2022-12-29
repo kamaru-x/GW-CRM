@@ -1,0 +1,66 @@
+{% extends 'cus/cus-base.html' %}
+{% block header %}
+<div class="header bg-primary pb-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+          <h6 class="h2 text-white d-inline-block mb-0"></h6>
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+              <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+              <li class="breadcrumb-item"><a href="#">127.0.0.1</a></li>
+              <li class="breadcrumb-item active" aria-current="page">closed ticket</li>
+            </ol>
+          </nav>
+        </div>
+        {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-danger col-md-12" role="alert">
+                    {{message}} 
+                </div>
+              {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock header %}
+{% block content %}
+
+<div class="card m-5 col-md-11 p-3 border border-primary">
+  {% for replay in replays %}
+  {% if replay.Attachment %}
+    <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
+      <img src="{{replay.Attachment.url}}" class="img-fluid"/>
+      <a href="#!">
+        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+      </a>
+    </div>
+    <!-- <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
+      <a href="{{replay.Attachment.url}}">{{replay.Attachment}}</a>
+    </div> -->
+  {% endif %}
+    <div class="card-body">
+        <span class="badge badge-warning mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+      <h3 class="card-text ">{{replay.Replay|striptags}}</h3>
+    </div>
+    <hr>
+  {% endfor %}
+
+  {% if ticket.Attachment %}
+  <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+    <img src="{{ticket.Attachment.url}}" class="img-fluid"/>
+    <a href="#!">
+      <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+    </a>
+  </div>
+  {% endif %}
+  <div class="card-body">
+      <span class="badge badge-warning mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+    <h3 class="card-text">{{ticket.Message|striptags}}</h3>
+  </div>
+
+</div>
+
+{% endblock content %}

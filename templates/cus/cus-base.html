@@ -77,9 +77,13 @@
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'list-tickets' %}">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="ni ni-archive-2 text-dark"></i>
-                  <span class="nav-link-text">Support Ticket</span>
+                  <span class="nav-link-text">Tickets</span>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'list-tickets' %}">Active Tickets</a>
+                    <a class="dropdown-item" href="{% url 'closed-ticket' %}">Closed Tickets</a>
+                  </div>
                 </a>
               </li>
 

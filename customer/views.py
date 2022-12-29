@@ -9,6 +9,8 @@ from datetime import datetime
 def customer_home(request):
     return render(request,'cus/cus-home.html')
 
+##################################################################################
+
 @login_required
 def list_domains(request):
     domains = Domain.objects.filter(Customer_Name=request.user)
@@ -17,6 +19,8 @@ def list_domains(request):
     }
     return render(request,'cus/list-domains.html',context)
 
+##################################################################################
+
 @login_required
 def user_tickets_list(request):
     tickets = Tickets.objects.filter(Creator=request.user).filter(Customer_Status=1).order_by('-id')
@@ -24,6 +28,8 @@ def user_tickets_list(request):
         'tickets' : tickets
     }
     return render(request,'cus/list-ticket.html',context)
+
+##################################################################################
 
 @login_required
 def create_ticket(request):
@@ -36,6 +42,8 @@ def create_ticket(request):
         ticket.save()
         return redirect('.')
     return render(request,'cus/create-ticket.html')
+
+##################################################################################
 
 @login_required
 def tickets_replay(request,id):
@@ -60,9 +68,36 @@ def tickets_replay(request,id):
     }
     return render(request,'cus/replayes.html',context)
 
+##################################################################################
+
 @login_required
 def customer_close_ticket(request,id):
     ticket = Tickets.objects.get(id=id)
     ticket.Customer_Status = 0
     ticket.save()
     return redirect('list-tickets')
+
+##################################################################################
+
+@login_required
+def user_closed_tickets(request):
+    tickets = Tickets.objects.filter(Creator=request.user).filter(Customer_Status=0).order_by('-id')
+    context = {
+        'tickets' : tickets
+    }
+    return render(request,'cus/closed-ticket.html',context)
+
+##################################################################################
+
+@login_required
+def closed_ticket_view(request,id):
+    usr = request.user
+    replayes = Replayes.objects.filter(Ticket__id=id).order_by('-id')
+    ticket = Tickets.objects.get(id=id)
+    context = {
+        'ticket' : ticket,
+        'replays' : replayes,
+    }
+    return render(request,'cus/view-closed-ticket.html',context)
+
+##################################################################################

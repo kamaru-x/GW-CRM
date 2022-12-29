@@ -1,4 +1,4 @@
-{% extends 'adm/admin-base.html' %}
+{% extends 'cus/cus-base.html' %}
 {% block header %}
 <div class="header bg-primary pb-6">
   <div class="container-fluid">
@@ -10,7 +10,7 @@
             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
               <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
               <li class="breadcrumb-item"><a href="#">127.0.0.1</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Active Tickets</li>
+              <li class="breadcrumb-item active" aria-current="page">Closed Tickets</li>
             </ol>
           </nav>
         </div>
@@ -29,7 +29,7 @@
 {% block content %}
 <div class="table-responsive">
     <div class="text-center mt-5 mb-5">
-        <h1>Active Tickets</h1>
+        <h1>Closed Tickets</h1>
     </div>
     <table class="table align-items-center table-flush">
       <thead class="thead-light">
@@ -52,7 +52,7 @@
             <td>{{ticket.Last_replayed_Date}}</td>
             <!-- <td>{{ticket.Date}}</td> -->
             <td>
-              <a href="{% url 'ticket-replayes' ticket.id %}"><button class="btn btn-success">view</button></a>
+              <a href="{% url 'closed_ticket_view' ticket.id %}"><button class="btn btn-success">view</button></a>
             </td>
           </tr>
         {% endfor %}
