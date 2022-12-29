@@ -16,6 +16,8 @@ from administrator.forms import EditCustomer
 def admin_home(request):
     return render(request,'adm/admin-home.html')
 
+##################################################################################
+
 @user_passes_test(lambda u: u.is_superuser)
 def customers_list(request):
     customers = User.objects.all().exclude(username='admin')
@@ -23,6 +25,8 @@ def customers_list(request):
         'customers' : customers
     }
     return render(request,'adm/customers-list.html',context)
+
+##################################################################################
 
 @user_passes_test(lambda u: u.is_superuser)
 def customer_details(request,username):
@@ -36,29 +40,7 @@ def customer_details(request,username):
     }
     return render(request,'adm/customer-details.html',context)
 
-# @user_passes_test(lambda u: u.is_superuser)
-# def edit_customer(request,id):
-#     customer = User.objects.get(id=id)
-#     ccodes = CCode.objects.all().exclude(Code = customer.CCode)
-#     countries = Country.objects.all().exclude(Name = customer.Country)
-#     if request.method == 'POST' :
-#         c = request.POST.get('ccode')
-#         co = request.POST.get('country')
-
-#         customer.username = request.POST.get('name')
-#         customer.email = request.POST.get('email')
-#         customer.CCode = CCode.objects.get(id=c)
-#         customer.Mobile = request.POST.get('mobile')
-#         customer.Country = Country.objects.get(id=co)
-#         customer.save()
-#         messages.success(request,'customer details edited successfully')
-#         return redirect('.')
-#     context = {
-#         'customer' : customer,
-#         'ccodes' : ccodes,
-#         'countries' : countries,
-#     }
-#     return render(request,'adm/edit_customer.html',context)
+##################################################################################
 
 @user_passes_test(lambda u: u.is_superuser)
 def edit_customer(request,id):
@@ -72,6 +54,8 @@ def edit_customer(request,id):
     else:
         form = EditCustomer(instance=customer)
     return render(request,'adm/edit_customer.html',{'form':form})
+
+##################################################################################
 
 @user_passes_test(lambda u: u.is_superuser)
 def add_domain(request):
@@ -106,6 +90,8 @@ def add_domain(request):
     }
     return render(request,'adm/add-domain.html',context)
 
+##################################################################################
+
 @user_passes_test(lambda u: u.is_superuser)
 def all_tickets(request):
 	tickets = Tickets.objects.filter(Admin_Status=1).order_by('-id')
@@ -113,6 +99,8 @@ def all_tickets(request):
 		'tickets' : tickets
 	}
 	return render(request,'adm/all-tickets.html',context)
+
+##################################################################################
 
 @user_passes_test(lambda u: u.is_superuser)
 def replay_ticket(request,id):
@@ -130,7 +118,7 @@ def replay_ticket(request,id):
         else:
             ip = request.META.get('REMOTE_ADDR')
 
-        data = Replayes(Ticket=ticket,Sender=usr,Replay=replay,Date=dt,Attachment=attachment,Ip=ip)
+        data = Replayes(Ticket=ticket,Sender=usr,Replay=replay,Date=dt,Attachment=attachment)
         data.save()
 
         last_replay = Replayes.objects.filter(Ticket__id=id).last()
@@ -138,6 +126,14 @@ def replay_ticket(request,id):
         ticket.save()
         return redirect('/ticket-replayes/%s'%ticket.id)
 
+    context = {
+		'replays' : replays,
+		'ticket' : ticket
+	}
+    
+    return render(request,'adm/ticket-replayes.html',context)
+
+##################################################################################
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_close_ticket(request,id):
@@ -145,3 +141,5 @@ def admin_close_ticket(request,id):
     ticket.Admin_Status = 0
     ticket.save()
     return redirect('list-ticket')
+
+##################################################################################
