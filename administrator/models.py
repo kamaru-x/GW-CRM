@@ -38,7 +38,8 @@ class Tickets(models.Model):
     Attachment = models.FileField(null=True,blank=True,upload_to='attachments/')
     Admin_Status = models.IntegerField(default=1)
     Customer_Status = models.IntegerField(default=1)
-    Last_replayed = models.IntegerField(null=True,blank=True)
+    Last_replayed = models.CharField(max_length=50,null=True,blank=True)
+    Last_replayed_Date = models.DateTimeField(null=True,blank=True)
 
     def __str__(self):
         return self.Message

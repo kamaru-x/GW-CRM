@@ -37,6 +37,8 @@
           <th scope="col" class="sort" data-sort="name">SI</th>
           <th scope="col" class="sort" data-sort="budget">Sender</th>
           <th scope="col" class="sort" data-sort="status">Date</th>
+          <th scope="col" class="sort" data-sort="status">Last Replayed</th>
+          <th scope="col" class="sort" data-sort="status">Replayed At</th>
           <th scope="col" class="sort" data-sort="completion"></th>
         </tr>
       </thead>
@@ -44,8 +46,10 @@
         {% for ticket in tickets %}
           <tr>
             <td>{{forloop.counter}}</td> 
-            <td>{{ticket.Creator}}</td>
+            <td>{{ticket.Creator.username}}</td>
             <td>{{ticket.Date}}</td>
+            <td>{{ticket.Last_replayed}}</td>
+            <td>{{ticket.Last_replayed_Date}}</td>
             <!-- <td>{{ticket.Date}}</td> -->
             <td>
               <a href="{% url 'ticket-replayes' ticket.id %}"><button class="btn btn-success">view</button></a>

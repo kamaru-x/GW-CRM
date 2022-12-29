@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from administrator.models import Domain,Tickets,Replayes
 from datetime import date
+from datetime import datetime
 
 # Create your views here.
 
@@ -27,7 +28,7 @@ def user_tickets_list(request):
 @login_required
 def create_ticket(request):
     if request.method == 'POST':
-        message = request.POST.get('message')
+        message = request.POST.get('test')
         attachment = request.FILES.get('attachment')
         creator = request.user
         dat = date.today()
@@ -42,11 +43,16 @@ def tickets_replay(request,id):
     replayes = Replayes.objects.filter(Ticket__id=id).order_by('-id')
     ticket = Tickets.objects.get(id=id)
     if request.method == 'POST':
-        replay = request.POST.get('message')
+        replay = request.POST.get('test')
         dt = date.today() 
         attachment = request.FILES.get('attachment')
         data = Replayes(Ticket=ticket,Sender=usr,Replay=replay,Date=dt,Attachment=attachment)
         data.save()
+
+        last_replay = Replayes.objects.filter(Ticket__id=id).last()
+        ticket.Last_replayed = last_replay.Sender.username
+        ticket.Last_replayed_Date = datetime.now()
+        ticket.save()
         return redirect('/replayes/%s'%ticket.id)
     context = {
         'ticket' : ticket,

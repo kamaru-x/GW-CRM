@@ -65,7 +65,7 @@
   {% endif %}
     <div class="card-body">
         <span class="badge badge-warning mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
-      <h3 class="card-text ">{{replay.Replay}}</h3>
+      <h3 class="card-text ">{{replay.Replay|striptags}}</h3>
     </div>
     <hr>
   {% endfor %}
@@ -80,7 +80,7 @@
   {% endif %}
   <div class="card-body">
       <span class="badge badge-warning mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
-    <h3 class="card-text">{{ticket.Message}}</h3>
+    <h3 class="card-text">{{ticket.Message|striptags}}</h3>
   </div>
 
 </div>

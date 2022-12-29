@@ -108,7 +108,7 @@ def replay_ticket(request,id):
     replays = Replayes.objects.filter(Ticket__id=id).order_by('-id')
     ticket = Tickets.objects.get(id=id)
     if request.method == 'POST' :
-        replay = request.POST.get('message')
+        replay = request.POST.get('test')
         dt = date.today()
         attachment = request.FILES.get('attachment')
 
@@ -122,7 +122,8 @@ def replay_ticket(request,id):
         data.save()
 
         last_replay = Replayes.objects.filter(Ticket__id=id).last()
-        ticket.Last_replayed = last_replay.id
+        ticket.Last_replayed = last_replay.Sender.username
+        ticket.Last_replayed_Date = datetime.now()
         ticket.save()
         return redirect('/ticket-replayes/%s'%ticket.id)
 
