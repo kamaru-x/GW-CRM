@@ -85,7 +85,13 @@ def add_domain(request):
         Begindate = datetime.strptime(date, "%Y-%m-%d")
         Enddate = Begindate + timedelta(days=365)
 
-        data = Domain(Customer_Name=cus,Domain_Name=domain,Purchase_Date=date,Renewal_Date=Enddate)
+        x_forw_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forw_for is not None:
+            ip = x_forw_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+
+        data = Domain(Customer_Name=cus,Domain_Name=domain,Purchase_Date=date,Renewal_Date=Enddate,Ip=ip,AddedBy=request.user.id)
         data.save()
 
         dcount = User.objects.get(id=cus.id)
@@ -110,21 +116,28 @@ def all_tickets(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def replay_ticket(request,id):
-	usr = request.user
-	replays = Replayes.objects.filter(Ticket__id=id).order_by('-id')
-	ticket = Tickets.objects.get(id=id)
-	if request.method == 'POST' :
-		replay = request.POST.get('message')
-		dt = date.today()
-		attachment = request.FILES.get('attachment')
-		data = Replayes(Ticket=ticket,Sender=usr,Replay=replay,Date=dt,Attachment=attachment)
-		data.save()
-		return redirect('/ticket-replayes/%s'%ticket.id)
-	context = {
-		'replays' : replays,
-		'ticket' : ticket
-	}
-	return render(request,'adm/ticket-replayes.html',context)
+    usr = request.user
+    replays = Replayes.objects.filter(Ticket__id=id).order_by('-id')
+    ticket = Tickets.objects.get(id=id)
+    if request.method == 'POST' :
+        replay = request.POST.get('message')
+        dt = date.today()
+        attachment = request.FILES.get('attachment')
+
+        x_forw_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forw_for is not None:
+            ip = x_forw_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+
+        data = Replayes(Ticket=ticket,Sender=usr,Replay=replay,Date=dt,Attachment=attachment,Ip=ip)
+        data.save()
+
+        last_replay = Replayes.objects.filter(Ticket__id=id).last()
+        ticket.Last_replayed = last_replay.id
+        ticket.save()
+        return redirect('/ticket-replayes/%s'%ticket.id)
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_close_ticket(request,id):

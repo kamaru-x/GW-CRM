@@ -14,6 +14,11 @@ class CCode(models.Model):
         return self.Code
 
 class Domain(models.Model):
+    Date = models.DateTimeField(auto_now_add=True)
+    Status = models.IntegerField(default=1)
+    AddedBy = models.IntegerField(default=1)
+    Ip = models.GenericIPAddressField(null=True,blank=True)
+
     Customer_Name = models.ForeignKey(User,on_delete=models.CASCADE)
     Domain_Name = models.CharField(max_length=50)
     Purchase_Date = models.DateField()
@@ -24,17 +29,24 @@ class Domain(models.Model):
         return self.Domain_Name
 
 class Tickets(models.Model):
+    Ip = models.GenericIPAddressField(null=True,blank=True)
+    Status = models.IntegerField(default=1)
+
     Creator = models.ForeignKey(User,on_delete=models.CASCADE)
     Message = models.TextField()
     Date = models.DateField(null=True,blank=True)
     Attachment = models.FileField(null=True,blank=True,upload_to='attachments/')
     Admin_Status = models.IntegerField(default=1)
     Customer_Status = models.IntegerField(default=1)
+    Last_replayed = models.IntegerField(null=True,blank=True)
 
     def __str__(self):
         return self.Message
 
 class Replayes(models.Model):
+    Ip = models.GenericIPAddressField(null=True,blank=True)
+    Status = models.IntegerField(default=1)
+
     Ticket = models.ForeignKey(Tickets,on_delete=models.CASCADE)
     Sender = models.ForeignKey(User,on_delete=models.CASCADE)
     Replay = models.TextField()
