@@ -33,6 +33,7 @@ class Tickets(models.Model):
     Status = models.IntegerField(default=1)
 
     Creator = models.ForeignKey(User,on_delete=models.CASCADE)
+    Title = models.CharField(max_length=50,null=True,blank=True)
     Message = models.TextField()
     Date = models.DateField(null=True,blank=True)
     Attachment = models.FileField(null=True,blank=True,upload_to='attachments/')

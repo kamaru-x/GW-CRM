@@ -34,11 +34,17 @@ def user_tickets_list(request):
 @login_required
 def create_ticket(request):
     if request.method == 'POST':
+        title = request.POST.get('title')
         message = request.POST.get('test')
         attachment = request.FILES.get('attachment')
         creator = request.user
         dat = date.today()
-        ticket = Tickets(Creator=creator,Message=message,Attachment=attachment,Date=dat)
+        x_forw_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forw_for is not None:
+            ip = x_forw_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        ticket = Tickets(Creator=creator,Message=message,Attachment=attachment,Date=dat,Ip=ip,Title=title)
         ticket.save()
         return redirect('.')
     return render(request,'cus/create-ticket.html')

@@ -28,6 +28,10 @@
 {% endblock header %}
 {% block content %}
 
+<div class="text-center mt-5 mb-5">
+  <h1>{{ticket.Title}}</h1>
+</div>
+
 <div class="card m-5 col-md-11 p-3 pt-0 border border-primary">
   {% for replay in replays %}
   {% if replay.Attachment %}

@@ -39,6 +39,10 @@
           {% csrf_token %}
           <div class="row mt-3">
                 <div class="form-outline mb-4 col-md-12 text-center">
+                  <label class="form-label">Title</label>
+                  <input type="text" name="title" class="form-control" />
+                </div>
+                <div class="form-outline mb-4 col-md-12 text-center">
                     <label class="form-label">Message</label>
                     <textarea required="True" name="test" id="" cols="30" rows="10" class="form-control"></textarea>
                 </div>
