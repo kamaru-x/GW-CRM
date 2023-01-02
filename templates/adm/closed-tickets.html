@@ -39,6 +39,8 @@
           <th scope="col" class="sort" data-sort="status">Date</th>
           <th scope="col" class="sort" data-sort="status">Last Replayed</th>
           <th scope="col" class="sort" data-sort="status">Replayed At</th>
+          <th scope="col" class="sort" data-sort="status">Closed By</th>
+          <th scope="col" class="sort" data-sort="status">Closed At</th>
           <th scope="col" class="sort" data-sort="completion"></th>
         </tr>
       </thead>
@@ -50,6 +52,8 @@
             <td>{{ticket.Date}}</td>
             <td>{{ticket.Last_replayed}}</td>
             <td>{{ticket.Last_replayed_Date}}</td>
+            <td>{{ticket.Closed_User}}</td>
+            <td>{{ticket.Closed_Date}}</td>
             <!-- <td>{{ticket.Date}}</td> -->
             <td>
               <a href="{% url 'closed-ticket-details' ticket.id %}"><button class="btn btn-success">view</button></a>

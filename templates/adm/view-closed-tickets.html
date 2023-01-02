@@ -10,7 +10,7 @@
             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
               <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
               <li class="breadcrumb-item"><a href="#">127.0.0.1</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Closed Ticket</li>
+              <li class="breadcrumb-item active" aria-current="page">List Domains</li>
             </ol>
           </nav>
         </div>
@@ -33,15 +33,25 @@
 </div>
 
 <div class="card m-5 col-md-11 p-3 pt-0 border border-primary">
+  
   {% for replay in replays %}
+
+    {% for attachment in attachments %}
+      {% if replay.id == attachment.Replay.id %}
+        <a href="{{attachment.Attach.url}}">{{attachment.Attach}}</a>
+      {% endif %}
+    {% endfor %}
+
   {% if replay.Attachment %}
     <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
+      <div class="row text-center d-flex justify-content-center">
       <img src="{{replay.Attachment.url}}" class="img-fluid"/>
-      <!-- <a href="{{replay.Attachment.url}}">
-        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);">
-          <h6>{{replay.Attachment}}</h6>
-        </div>
-      </a> -->
+    </div>
+    <!-- <div class="row d-flex justify-content-center">
+      <a href="{{replay.Attachment.url}}">
+        <span class="badge badge-warning">single-copy-04</span>
+      </a>
+    </div> -->
     </div>
   {% endif %}
     <div class="card-body">
@@ -61,11 +71,17 @@
   </div>
   <hr>
   {% endif %}
+
+  {% for attachment in attachments %}
+      {% if ticket.id == attachment.Ticket.id %}
+        <a href="{{attachment.Attach.url}}">{{attachment.Attach}}</a>
+      {% endif %}
+  {% endfor %}
+  
   <div class="card-body">
       <span class="badge badge-warning">{{ticket.Creator.username}} // {{ticket.Date}}</span>
     <p class="card-text"></p>
     <h3 class="card-text">{{ticket.Message|striptags}}</h3>
   </div>
 </div>
-
 {% endblock content %}

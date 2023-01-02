@@ -28,22 +28,6 @@
 {% endblock header %}
 {% block content %}
 
-<!-- <div class="card m-5 col-md-11 p-3 border border-primary">
-  {% if ticket.Attachment %}
-    <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
-      <img src="{{ticket.Attachment}}" class="img-fluid"/>
-      <a href="#!">
-        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-      </a>
-    </div>
-  {% endif %}
-    <div class="card-body text-center">
-        <span class="badge badge-success">{{ticket.Creator}} // {{ticket.Date}}</span>
-        <hr>
-      <p class="card-text">{{ticket.Message}}</p>
-    </div>
-</div> -->
-
 <div class="row">
   <div class="col-md-12 d-flex justify-content-end">
     <a href="{% url 'customer-close' ticket.id %}"><input type="button" value="close ticket" class="btn btn-danger mr-5 mt-5" ></a>
@@ -55,18 +39,21 @@
 </div>
 
 <div class="card m-5 col-md-11 p-3 border border-primary">
+
   {% for replay in replays %}
+
+    {% for attachment in attachments %}
+      {% if replay.id == attachment.Replay.id %}
+        <a href="{{attachment.Attach.url}}">{{attachment.Attach}}</a>
+      {% endif %}
+    {% endfor %}
+
   {% if replay.Attachment %}
     <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
       <img src="{{replay.Attachment.url}}" class="img-fluid"/>
-      <a href="#!">
-        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-      </a>
     </div>
-    <!-- <div class="bg-image hover-overlay ripple text-center" data-mdb-ripple-color="light">
-      <a href="{{replay.Attachment.url}}">{{replay.Attachment}}</a>
-    </div> -->
   {% endif %}
+
     <div class="card-body">
         <span class="badge badge-warning mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
       <h3 class="card-text ">{{replay.Replay|striptags}}</h3>
@@ -82,6 +69,15 @@
     </a>
   </div>
   {% endif %}
+
+
+  {% for attachment in attachments %}
+      {% if ticket.id == attachment.Ticket.id %}
+        <a href="{{attachment.Attach.url}}">{{attachment.Attach}}</a>
+      {% endif %}
+  {% endfor %}
+
+
   <div class="card-body">
       <span class="badge badge-warning mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
     <h3 class="card-text">{{ticket.Message|striptags}}</h3>

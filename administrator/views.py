@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from d_auth.models import User
-from administrator.models import Domain,CCode,Country,Tickets,Replayes
+from administrator.models import Domain,CCode,Country,Tickets,Replayes,Attachment
 from django.contrib.auth.decorators import user_passes_test
 from datetime import date
 import datetime
@@ -107,10 +107,13 @@ def replay_ticket(request,id):
     usr = request.user
     replays = Replayes.objects.filter(Ticket__id=id).order_by('-id')
     ticket = Tickets.objects.get(id=id)
+    attachments = Attachment.objects.all()
+    tattach = Attachment.objects.filter(Ticket=ticket)
+    
     if request.method == 'POST' :
         replay = request.POST.get('test')
         dt = date.today()
-        attachment = request.FILES.get('attachment')
+        attachment = request.FILES.getlist('attachment')
 
         x_forw_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forw_for is not None:
@@ -118,18 +121,24 @@ def replay_ticket(request,id):
         else:
             ip = request.META.get('REMOTE_ADDR')
 
-        data = Replayes(Ticket=ticket,Sender=usr,Replay=replay,Date=dt,Attachment=attachment)
+        data = Replayes(Ticket=ticket,Sender=usr,Replay=replay,Date=dt)
         data.save()
 
         last_replay = Replayes.objects.filter(Ticket__id=id).last()
         ticket.Last_replayed = last_replay.Sender.username
         ticket.Last_replayed_Date = datetime.now()
         ticket.save()
+
+        for a in attachment:
+            attach = Attachment(Replay=last_replay,Attach=a)
+            attach.save()
         return redirect('/ticket-replayes/%s'%ticket.id)
 
     context = {
 		'replays' : replays,
-		'ticket' : ticket
+		'ticket' : ticket,
+        'attachments' : attachments,
+        'attachs' : tattach,
 	}
     
     return render(request,'adm/ticket-replayes.html',context)
@@ -140,6 +149,8 @@ def replay_ticket(request,id):
 def admin_close_ticket(request,id):
     ticket = Tickets.objects.get(id=id)
     ticket.Admin_Status = 0
+    ticket.Closed_Date = datetime.now()
+    ticket.Closed_User = request.user.username
     ticket.save()
     return redirect('list-ticket')
 
@@ -160,9 +171,13 @@ def view_closed_ticket(request,id):
     usr = request.user
     replays = Replayes.objects.filter(Ticket__id=id).order_by('-id')
     ticket = Tickets.objects.get(id=id)
+    attachments = Attachment.objects.all()
+    tattach = Attachment.objects.filter(Ticket=ticket)
     context = {
 		'replays' : replays,
-		'ticket' : ticket
+		'ticket' : ticket,
+        'attachments' : attachments,
+        'attachs' : tattach,
 	}
     
     return render(request,'adm/view-closed-tickets.html',context)
