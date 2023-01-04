@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from administrator.models import Domain,Tickets,Replayes,Attachment
 from datetime import date
 from datetime import datetime
+import itertools
 
 # Create your views here.
 
@@ -23,7 +24,7 @@ def list_domains(request):
 
 @login_required
 def user_tickets_list(request):
-    tickets = Tickets.objects.filter(Creator=request.user).filter(Customer_Status=1).order_by('-id')
+    tickets = Tickets.objects.filter(Creator=request.user).filter(Status=1).order_by('-id')
     context = {
         'tickets' : tickets
     }
@@ -36,8 +37,9 @@ def create_ticket(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         message = request.POST.get('test')
-        attachment = request.FILES.getlist('attachment')
+        attachments = request.FILES.getlist('attachment')
         creator = request.user
+        filenames = request.POST.getlist('filename')
         dat = date.today()
         x_forw_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forw_for is not None:
@@ -48,9 +50,14 @@ def create_ticket(request):
         ticket = Tickets(Creator=creator,Message=message,Date=dat,Ip=ip,Title=title)
         ticket.save()
         tick = Tickets.objects.last()
-        for a in attachment:
-            attach = Attachment(Ticket=tick,Attach=a)
+        # for a in attachment:
+        #     attach = Attachment(Ticket=tick,Attach=a,Name=filename)
+        #     attach.save()
+
+        for (attachment , filename) in zip(attachments,filenames):
+            attach = Attachment(Ticket=tick,Attach=attachment,Name=filename)
             attach.save()
+
         return redirect('.')
     return render(request,'cus/create-ticket.html')
 
@@ -66,8 +73,9 @@ def tickets_replay(request,id):
     
     if request.method == 'POST':
         replay = request.POST.get('test')
+        filenames = request.POST.getlist('filename')
         dt = date.today() 
-        attachment = request.FILES.getlist('attachment')
+        attachmentz = request.FILES.getlist('attachment')
         data = Replayes(Ticket=ticket,Sender=usr,Replay=replay,Date=dt)
         data.save()
 
@@ -76,8 +84,8 @@ def tickets_replay(request,id):
         ticket.Last_replayed_Date = datetime.now()
         ticket.save()
 
-        for a in attachment:
-            attach = Attachment(Replay=last_replay,Attach=a)
+        for (attachment , filename) in zip(attachmentz,filenames):
+            attach = Attachment(Replay=last_replay,Attach=attachment,Name=filename)
             attach.save()
         return redirect('/replayes/%s'%ticket.id)
     context = {
@@ -93,7 +101,7 @@ def tickets_replay(request,id):
 @login_required
 def customer_close_ticket(request,id):
     ticket = Tickets.objects.get(id=id)
-    ticket.Customer_Status = 0
+    ticket.Status = 0
     ticket.save()
     return redirect('list-tickets')
 
@@ -101,7 +109,7 @@ def customer_close_ticket(request,id):
 
 @login_required
 def user_closed_tickets(request):
-    tickets = Tickets.objects.filter(Creator=request.user).filter(Customer_Status=0).order_by('-id')
+    tickets = Tickets.objects.filter(Creator=request.user).filter(Status=0).order_by('-id')
     context = {
         'tickets' : tickets
     }

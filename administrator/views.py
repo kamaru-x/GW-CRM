@@ -9,6 +9,7 @@ from datetime import datetime
 from datetime import timedelta
 from django.contrib import messages
 from administrator.forms import EditCustomer
+import itertools
 
 # Create your views here.
 
@@ -20,7 +21,7 @@ def admin_home(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def customers_list(request):
-    customers = User.objects.all().exclude(username='admin')
+    customers = User.objects.all().exclude(is_superuser=True).exclude(is_staff=True)
     context = {
         'customers' : customers
     }
@@ -94,7 +95,7 @@ def add_domain(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def all_tickets(request):
-	tickets = Tickets.objects.filter(Admin_Status=1).order_by('-id')
+	tickets = Tickets.objects.filter(Status=1).order_by('-id')
 	context = {
 		'tickets' : tickets
 	}
@@ -113,7 +114,8 @@ def replay_ticket(request,id):
     if request.method == 'POST' :
         replay = request.POST.get('test')
         dt = date.today()
-        attachment = request.FILES.getlist('attachment')
+        attachments = request.FILES.getlist('attachment')
+        filenames = request.POST.getlist('filename')
 
         x_forw_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forw_for is not None:
@@ -129,8 +131,8 @@ def replay_ticket(request,id):
         ticket.Last_replayed_Date = datetime.now()
         ticket.save()
 
-        for a in attachment:
-            attach = Attachment(Replay=last_replay,Attach=a)
+        for (attachment , filename) in zip(attachments,filenames):
+            attach = Attachment(Replay=last_replay,Attach=attachment,Name=filename)
             attach.save()
         return redirect('/ticket-replayes/%s'%ticket.id)
 
@@ -148,7 +150,7 @@ def replay_ticket(request,id):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_close_ticket(request,id):
     ticket = Tickets.objects.get(id=id)
-    ticket.Admin_Status = 0
+    ticket.Status = 0
     ticket.Closed_Date = datetime.now()
     ticket.Closed_User = request.user.username
     ticket.save()
@@ -158,7 +160,7 @@ def admin_close_ticket(request,id):
 
 @user_passes_test(lambda u: u.is_superuser)
 def closed_tickets(request):
-	tickets = Tickets.objects.filter(Admin_Status=0).order_by('-id')
+	tickets = Tickets.objects.filter(Status=0).order_by('-id')
 	context = {
 		'tickets' : tickets
 	}
@@ -183,3 +185,21 @@ def view_closed_ticket(request,id):
     return render(request,'adm/view-closed-tickets.html',context)
 
 ##################################################################################
+
+@user_passes_test(lambda u: u.is_superuser)
+def deactivate_domain(request,cid,did):
+    customer = User.objects.get(id=cid)
+    domain = Domain.objects.get(id=did)
+    domain.Status = 0
+    domain.save()
+    return redirect('/customer-details/%s'%customer.username)
+
+##################################################################################
+
+@user_passes_test(lambda u: u.is_superuser)
+def staff_list(request):
+    customers = User.objects.filter(is_staff=True).exclude(is_superuser=True)
+    context = {
+        'customers' : customers
+    }
+    return render(request,'adm/staff-list.html',context)

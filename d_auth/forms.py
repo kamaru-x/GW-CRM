@@ -54,6 +54,33 @@ class CreateCustomer(UserCreationForm):
             'CCode': Select(attrs={'class' : 'form-control'}),
         }
 
+class CreateStaff(UserCreationForm):
+
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control"
+            }
+        )
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control"
+            }
+        )
+    )
+    
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2','is_staff')
+
+        widgets = {
+            'username': TextInput(attrs={'class' : 'form-control','placeholder':'Enter staff name'}),
+            'email': EmailInput(attrs={'class' : 'form-control','placeholder':'Enter staff email'}),
+            'password1': TextInput(attrs={'class' : 'form-control'}),
+            'password2': TextInput(attrs={'class' : 'form-control'}),
+        }
 
 class ChangePassword(PasswordChangeForm):
     def __init__(self,*args,**kwargs):

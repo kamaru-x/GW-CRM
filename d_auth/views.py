@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from d_auth.forms import CreateCustomer,LoginForm
+from d_auth.forms import CreateCustomer,LoginForm,CreateStaff
 from django.contrib.auth import authenticate,login
 from django.core.mail import send_mail
 from d_auth.models import User
@@ -32,6 +32,38 @@ def create_customer(request):
         field.widget = field.hidden_widget()
     return render(request,'aut/create-customer.html', {'form': form})
 
+def create_staff(request):
+    if request.method == 'POST':
+        form = CreateStaff(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'created new staff')
+            send_mail('Password for Your Website','your password is #password123 ','xin.kamaru@gmail.com',['hackerkamaru@gmail.com'],fail_silently=False)
+            return redirect('add-staff')
+        else:
+            messages.error(request,'cant create user some error occupied')
+    else:
+        form = CreateStaff(initial={
+            'password2': '#password123',
+            'password1': '#password123',
+            'is_staff' : 'True'
+            })
+        form.fields['password1'].widget.render_value = True
+        form.fields['password2'].widget.render_value = True
+        form.fields['is_staff'].widget.render_value = True
+        field = form.fields['password1']
+        field.widget = field.hidden_widget()
+        field = form.fields['password2']
+        field.widget = field.hidden_widget()
+        field = form.fields['is_staff']
+        field.widget = field.hidden_widget()
+    
+    context = {
+        'form' : form
+    }
+
+    return render(request,'aut/add-staff.html',context)
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -43,6 +75,8 @@ def user_login(request):
             login(request, user)
             if request.user.is_superuser:
                 return redirect('admin-home')
+            elif request.user.is_staff:
+                return redirect('staff-home')
             else:
                 return redirect('cus-home')
         else:

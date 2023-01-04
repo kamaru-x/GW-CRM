@@ -69,6 +69,17 @@
               </li>
 
               <li class="nav-item">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="ni ni-circle-08 text-green"></i>
+                  <span class="nav-link-text">Staff</span>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'add-staff' %}">Add Staff</a>
+                    <a class="dropdown-item" href="{% url 'staff-list' %}">List Staffs</a>
+                  </div>
+                </a>
+              </li>
+
+              <li class="nav-item">
                 <a class="nav-link" href="{% url 'add-domain' %}">
                   <i class="ni ni-world-2 text-dark"></i>
                   <span class="nav-link-text">Add Domain</span>
@@ -306,6 +317,7 @@
   <script src="{% static 'assets/js/url.js' %}"></script>
   <script src="{% static 'assets/js/set-color.js' %}"></script>
   <script src="{% static 'assets/js/alert.js' %}"></script>
+  <script src="{% static 'assets/js/attachment.js' %}"></script>
   <!-- <script src="{% static 'assets/js/autourl.js' %}"></script> -->
   <script src="{% static 'assets/vendor/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>

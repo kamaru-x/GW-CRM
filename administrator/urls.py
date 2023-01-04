@@ -11,5 +11,7 @@ urlpatterns = [
     path('ticket-replayes/<int:id>',views.replay_ticket,name='ticket-replayes'),
     path('close-ticket/<int:id>',views.admin_close_ticket,name='admin-close'),
     path('closed-ticket/',views.closed_tickets,name='closed-tickets'),
-    path('closed-ticket-details/<int:id>/',views.view_closed_ticket,name='closed-ticket-details')
+    path('closed-ticket-details/<int:id>/',views.view_closed_ticket,name='closed-ticket-details'),
+    path('deactivate/<int:cid>/<int:did>/',views.deactivate_domain,name='deactivate'),
+    path('staff-list/',views.staff_list,name='staff-list'),
 ]

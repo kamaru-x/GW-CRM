@@ -97,12 +97,20 @@
                         <tr>
                           <td>{{forloop.counter}}</td> 
                           <td>{{domain.Domain_Name}}</td>
-                          <td>active</td>
+                          {% if domain.Status == 1 %}
+                            <td>Active</td>
+                          {% else %}
+                            <td>Not Active</td>
+                          {% endif %}
                           <td>{{domain.Purchase_Date}}</td>
                           <td>{{domain.Renewal_Date}}</td>
-                          <td>
-                            <button class="btn btn-danger">Deactivate</button>
-                          </td>
+                          {% if domain.Status == 1 %}
+                            <td>
+                              <a href="{% url 'deactivate' customer.id domain.id %}"><button class="btn btn-danger">Deactivate</button></a>
+                            </td>
+                          {% else %}
+                            <td></td>
+                          {% endif %}
                         </tr>
                       {% endfor %}
                     </tbody>

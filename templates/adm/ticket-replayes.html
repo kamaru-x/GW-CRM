@@ -30,7 +30,7 @@
 
 <div class="row">
   <div class="col-md-12 d-flex justify-content-end">
-    <a href="{% url 'admin-close' ticket.id %}"><input type="button" value="close ticket" class="btn btn-danger mr-5 mt-5" ></a>
+    <button type="button" class="btn btn-danger mr-5 mt-5" data-toggle="modal" data-target="#exampleModalCenter-{{forloop.counter}}">Close Ticket</button>
   </div>
 </div>
 
@@ -44,7 +44,7 @@
 
     {% for attachment in attachments %}
       {% if replay.id == attachment.Replay.id %}
-        <a href="{{attachment.Attach.url}}">{{attachment.Attach}}</a>
+        <a href="{{attachment.Attach.url}}">{{attachment.Name}}</a>
       {% endif %}
     {% endfor %}
 
@@ -61,7 +61,13 @@
     </div>
   {% endif %}
     <div class="card-body">
-        <span class="badge badge-warning mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+      {% if replay.Sender.is_superuser %}
+          <span class="badge badge-success mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+      {% elif replay.Sender.is_staff %}
+          <span class="badge badge-primary mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+      {% else %}
+          <span class="badge badge-danger mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+      {% endif %}
       <p class="card-text"></p>
       <h3 class="card-text">{{replay.Replay|striptags}}</h3>
     </div>
@@ -80,12 +86,18 @@
 
   {% for attachment in attachments %}
       {% if ticket.id == attachment.Ticket.id %}
-        <a href="{{attachment.Attach.url}}">{{attachment.Attach}}</a>
+        <a href="{{attachment.Attach.url}}">{{attachment.Name}}</a>
       {% endif %}
   {% endfor %}
   
   <div class="card-body">
-      <span class="badge badge-warning">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+    {% if ticket.Creator.is_superuser %}
+        <span class="badge badge-success mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+    {% elif ticket.Creator.is_staff %}
+        <span class="badge badge-primary mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+    {% else %}
+        <span class="badge badge-danger mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+    {% endif %}
     <p class="card-text"></p>
     <h3 class="card-text">{{ticket.Message|striptags}}</h3>
   </div>
@@ -97,16 +109,95 @@
     </div>
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="row mt-3">
+      <div class="row mt-3" id="here">
             <div class="form-outline mb-4 col-md-12 text-center">
                 <label class="form-label text-center">Replay</label>
                 <textarea required="True" name="test" id="" cols="30" rows="10" class="form-control"></textarea>
             </div>
-            <div class="form-outline mb-4 col-md-12 text-center">
-              <label class="form-label">Attach File</label>
-              <input type="file" name="attachment" class="form-control" />
-            </div>
       </div>
+
+
+      <div class="row">
+        <div class="form-outline mb-4 col-md-5 text-center">
+          <label class="form-label">File Name</label>
+          <input type="text" name="filename" class="form-control" placeholder="Enter file name"/>
+        </div>
+        <div class="form-outline mb-4 col-md-5 text-center">
+          <label class="form-label">Attach File</label>
+          <input type="file" name="attachment" class="form-control" />
+        </div>
+        <div class="form-outline mb-4 col-md-2 text-center">
+          <label for="" style="color: transparent;">add new</label>
+          <!-- <button class="btn btn-primary mt-2" >+</button> -->
+          <i class="btn btn-primary " id="btn1">add new file</i>
+        </div>
+    </div>
+
+    <div class="row" id="attach1" name="attach1">
+      <div class="form-outline mb-4 col-md-5 text-center">
+        <label class="form-label">File Name</label>
+        <input type="text" name="filename" class="form-control" placeholder="Enter file name"/>
+      </div>
+      <div class="form-outline mb-4 col-md-5 text-center">
+        <label class="form-label">Attach File</label>
+        <input type="file" name="attachment" class="form-control" />
+      </div>
+      <div class="form-outline mb-4 col-md-2 text-center">
+        <label for="" style="color: transparent;">add new</label>
+        <!-- <button class="btn btn-primary mt-2" >+</button> -->
+        <i class="btn btn-primary " id="btn2">add new file</i>
+      </div>
+    </div>
+
+    <div class="row" id="attach2" name="attach2">
+      <div class="form-outline mb-4 col-md-5 text-center">
+        <label class="form-label">File Name</label>
+        <input type="text" name="filename" class="form-control" placeholder="Enter file name"/>
+      </div>
+      <div class="form-outline mb-4 col-md-5 text-center">
+        <label class="form-label">Attach File</label>
+        <input type="file" name="attachment" class="form-control" />
+      </div>
+      <div class="form-outline mb-4 col-md-2 text-center">
+        <label for="" style="color: transparent;">add new</label>
+        <!-- <button class="btn btn-primary mt-2" >+</button> -->
+        <i class="btn btn-primary " id="btn3">add new file</i>
+      </div>
+    </div>
+
+    <div class="row" id="attach3" name="attach3">
+      <div class="form-outline mb-4 col-md-5 text-center">
+        <label class="form-label">File Name</label>
+        <input type="text" name="filename" class="form-control" placeholder="Enter file name"/>
+      </div>
+      <div class="form-outline mb-4 col-md-5 text-center">
+        <label class="form-label">Attach File</label>
+        <input type="file" name="attachment" class="form-control" />
+      </div>
+      <div class="form-outline mb-4 col-md-2 text-center">
+        <label for="" style="color: transparent;">add new</label>
+        <!-- <button class="btn btn-primary mt-2" >+</button> -->
+        <i class="btn btn-primary " id="btn4">add new file</i>
+      </div>
+    </div>
+
+    <div class="row" id="attach4" name="attach4">
+      <div class="form-outline mb-4 col-md-5 text-center">
+        <label class="form-label">File Name</label>
+        <input type="text" name="filename" class="form-control" placeholder="Enter file name"/>
+      </div>
+      <div class="form-outline mb-4 col-md-5 text-center">
+        <label class="form-label">Attach File</label>
+        <input type="file" name="attachment" class="form-control" />
+      </div>
+      <div class="form-outline mb-4 col-md-2 text-center">
+        <label for="" style="color: transparent;">add new</label>
+        <!-- <button class="btn btn-primary mt-2" >+</button> -->
+        <i class="btn btn-primary " id="btn5">add new file</i>
+      </div>
+    </div>
+
+
       <div class="row mb-4 text-center">
         <div class="col-md-4"></div>
         <div class="col d-flex justify-content-center col-md-4">
@@ -114,6 +205,19 @@
         </div>
         <div class="col-md-4"></div>
       </div>
-    </form>
+</div>
+
+<div class="modal fade" id="exampleModalCenter-{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        do you want to close the ticket
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a href="{% url 'admin-close' ticket.id %}"><button type="button" class="btn btn-danger">Close Ticket</button></a>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock content %}

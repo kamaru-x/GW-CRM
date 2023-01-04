@@ -38,7 +38,7 @@
 
     {% for attachment in attachments %}
       {% if replay.id == attachment.Replay.id %}
-        <a href="{{attachment.Attach.url}}">{{attachment.Attach}}</a>
+        <a href="{{attachment.Attach.url}}">{{attachment.Name}}</a>
       {% endif %}
     {% endfor %}
 
@@ -55,7 +55,13 @@
     </div>
   {% endif %}
     <div class="card-body">
-        <span class="badge badge-warning mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+      {% if replay.Sender.is_superuser %}
+          <span class="badge badge-success mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+      {% elif replay.Sender.is_staff %}
+          <span class="badge badge-primary mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+      {% else %}
+          <span class="badge badge-danger mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+      {% endif %}
       <p class="card-text"></p>
       <h3 class="card-text">{{replay.Replay|striptags}}</h3>
     </div>
@@ -74,12 +80,18 @@
 
   {% for attachment in attachments %}
       {% if ticket.id == attachment.Ticket.id %}
-        <a href="{{attachment.Attach.url}}">{{attachment.Attach}}</a>
+        <a href="{{attachment.Attach.url}}">{{attachment.Name}}</a>
       {% endif %}
   {% endfor %}
   
   <div class="card-body">
-      <span class="badge badge-warning">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+    {% if ticket.Creator.is_superuser %}
+        <span class="badge badge-success mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+    {% elif ticket.Creator.is_staff %}
+        <span class="badge badge-primary mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+    {% else %}
+        <span class="badge badge-danger mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+    {% endif %}
     <p class="card-text"></p>
     <h3 class="card-text">{{ticket.Message|striptags}}</h3>
   </div>

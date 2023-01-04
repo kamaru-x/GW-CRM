@@ -33,6 +33,7 @@ class Tickets(models.Model):
     Status = models.IntegerField(default=1)
 
     Creator = models.ForeignKey(User,on_delete=models.CASCADE)
+    Staff = models.IntegerField(null=True,blank=True)
     Title = models.CharField(max_length=50,null=True,blank=True)
     Message = models.TextField()
     Date = models.DateField(null=True,blank=True)
@@ -61,7 +62,7 @@ class Replayes(models.Model):
         return self.Replay
 
 class Attachment(models.Model):
-    Name = models.CharField(max_length=100,default='attachment',null=True,blank=True)
+    Name = models.CharField(max_length=100,null=True,blank=True)
     Ticket = models.ForeignKey(Tickets,on_delete=models.CASCADE,null=True,blank=True)
     Replay = models.ForeignKey(Replayes,on_delete=models.DO_NOTHING,null=True,blank=True)
     Attach = models.FileField(upload_to='attachments/')
