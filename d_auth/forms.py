@@ -4,10 +4,10 @@ from d_auth.models import User
 from django.forms import TextInput,EmailInput,Select
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
+    Name = forms.CharField()
     password = forms.CharField()
 
-    username = forms.CharField(
+    Name = forms.CharField(
         widget= forms.TextInput(
             attrs={
                 "class": "form-control"
@@ -42,10 +42,10 @@ class CreateCustomer(UserCreationForm):
     
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2','Country','CCode','Mobile')
+        fields = ('Name', 'email', 'password1', 'password2','Country','CCode','Mobile')
 
         widgets = {
-            'username': TextInput(attrs={'class' : 'form-control','placeholder':'Enter company name'}),
+            'Name': TextInput(attrs={'class' : 'form-control','placeholder':'Enter company name'}),
             'email': EmailInput(attrs={'class' : 'form-control','placeholder':'Enter company email'}),
             'password1': TextInput(attrs={'class' : 'form-control'}),
             'password2': TextInput(attrs={'class' : 'form-control'}),
@@ -73,10 +73,10 @@ class CreateStaff(UserCreationForm):
     
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2','is_staff')
+        fields = ('Name', 'email', 'password1', 'password2','is_staff')
 
         widgets = {
-            'username': TextInput(attrs={'class' : 'form-control','placeholder':'Enter staff name'}),
+            'Name': TextInput(attrs={'class' : 'form-control','placeholder':'Enter staff name'}),
             'email': EmailInput(attrs={'class' : 'form-control','placeholder':'Enter staff email'}),
             'password1': TextInput(attrs={'class' : 'form-control'}),
             'password2': TextInput(attrs={'class' : 'form-control'}),

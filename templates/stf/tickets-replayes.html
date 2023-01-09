@@ -62,11 +62,11 @@
   {% endif %}
     <div class="card-body">
         {% if replay.Sender.is_superuser %}
-            <span class="badge badge-success mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+            <span class="badge badge-success mb-2">{{replay.Sender.Name}} // {{replay.Date}}</span>
         {% elif replay.Sender.is_staff %}
-            <span class="badge badge-primary mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+            <span class="badge badge-primary mb-2">{{replay.Sender.Name}} // {{replay.Date}}</span>
         {% else %}
-            <span class="badge badge-danger mb-2">{{replay.Sender.username}} // {{replay.Date}}</span>
+            <span class="badge badge-danger mb-2">{{replay.Sender.Name}} // {{replay.Date}}</span>
         {% endif %}
       <p class="card-text"></p>
       <h3 class="card-text">{{replay.Replay|striptags}}</h3>
@@ -92,11 +92,11 @@
   
   <div class="card-body">
     {% if ticket.Creator.is_superuser %}
-        <span class="badge badge-success mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+        <span class="badge badge-success mb-2">{{ticket.Creator.Name}} // {{ticket.Date}}</span>
     {% elif ticket.Creator.is_staff %}
-        <span class="badge badge-primary mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+        <span class="badge badge-primary mb-2">{{ticket.Creator.Name}} // {{ticket.Date}}</span>
     {% else %}
-        <span class="badge badge-danger mb-2">{{ticket.Creator.username}} // {{ticket.Date}}</span>
+        <span class="badge badge-danger mb-2">{{ticket.Creator.Name}} // {{ticket.Date}}</span>
     {% endif %}
     <p class="card-text"></p>
     <h3 class="card-text">{{ticket.Message|striptags}}</h3>

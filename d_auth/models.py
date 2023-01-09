@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import uuid
 
 # Create your models here.
 
@@ -22,6 +23,7 @@ class User(AbstractUser):
     CCode = models.ForeignKey(CCodes,on_delete=models.DO_NOTHING,null=True,blank=True)
     Mobile = models.CharField('Mobile',max_length=15,null=True,blank=True)
     Domains = models.IntegerField(default=0)
+    username = models.CharField(max_length=50,default=uuid.uuid4)
 
     USERNAME_FIELD = 'email'
 

@@ -30,8 +30,8 @@ def customers_list(request):
 ##################################################################################
 
 @user_passes_test(lambda u: u.is_superuser)
-def customer_details(request,username):
-    customer = User.objects.get(username=username)
+def customer_details(request,Name):
+    customer = User.objects.get(Name=Name)
     domains = Domain.objects.filter(Customer_Name=customer)
     count = domains.count()
     context = {
@@ -127,7 +127,7 @@ def replay_ticket(request,id):
         data.save()
 
         last_replay = Replayes.objects.filter(Ticket__id=id).last()
-        ticket.Last_replayed = last_replay.Sender.username
+        ticket.Last_replayed = last_replay.Sender.Name
         ticket.Last_replayed_Date = datetime.now()
         ticket.save()
 
@@ -152,7 +152,7 @@ def admin_close_ticket(request,id):
     ticket = Tickets.objects.get(id=id)
     ticket.Status = 0
     ticket.Closed_Date = datetime.now()
-    ticket.Closed_User = request.user.username
+    ticket.Closed_User = request.user.Name
     ticket.save()
     return redirect('list-ticket')
 
@@ -192,7 +192,7 @@ def deactivate_domain(request,cid,did):
     domain = Domain.objects.get(id=did)
     domain.Status = 0
     domain.save()
-    return redirect('/customer-details/%s'%customer.username)
+    return redirect('/customer-details/%s'%customer.Name)
 
 ##################################################################################
 

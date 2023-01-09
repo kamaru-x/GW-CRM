@@ -54,7 +54,7 @@ def replays_tickets(request,id):
         data.save()
 
         last_replay = Replayes.objects.filter(Ticket__id=id).last()
-        ticket.Last_replayed = last_replay.Sender.username
+        ticket.Last_replayed = last_replay.Sender.Name
         ticket.Last_replayed_Date = datetime.now()
         ticket.save()
 

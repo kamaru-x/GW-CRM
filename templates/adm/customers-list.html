@@ -50,7 +50,7 @@
         {% for customer in customers %}
           <tr>
             <td>{{forloop.counter}}</td> 
-            <td>{{customer.username}}</td>
+            <td>{{customer.Name}}</td>
             <!-- {% if customer.Image %}  
               <td scope="row" class="align-items-center d-flex justify-content-center">
                 <div class="media align-items-center">
@@ -72,7 +72,7 @@
             <td>{{customer.Mobile}}</td>
             <td>{{customer.Domains}}</td>
             <td>
-              <a href="{% url 'customer-details' customer.username %}"><button class="btn btn-success">view</button></a>
+              <a href="{% url 'customer-details' customer.Name %}"><button class="btn btn-success">view</button></a>
             </td>
             <td>
               <a href="{% url 'edit-customer' customer.id %}"><button class="btn btn-primary">Edit</button></a>
